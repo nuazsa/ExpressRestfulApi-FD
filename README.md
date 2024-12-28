@@ -3,7 +3,7 @@
 > API designed for posting and sharing short stories, similar to tweet-style posts.
 
 ## Endpoint
-`http://127.0.0.1:3000/api`
+`http://127.0.0.1:3000`
 ### Register
 - URL
     - `/register`
