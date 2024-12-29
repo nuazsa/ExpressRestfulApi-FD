@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
-const PORT = 3000;
 const mysql = require("mysql2");
 const bcrypt = require("bcryptjs");
 var salt = bcrypt.genSaltSync(10);
 var jwt = require('jsonwebtoken');
+require('dotenv').config()
 
 app.use(express.json());
 
@@ -16,10 +16,10 @@ app.use(express.json());
  * ============================================
  */
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "story_sharing_api",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 db.connect((err) => {
@@ -356,6 +356,6 @@ app.get("/stories/:id", authenticateToken, (req, res) => {
  * 
  * ============================================
  */
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
