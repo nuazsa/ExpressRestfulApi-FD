@@ -113,7 +113,7 @@ app.post("/register", (req, res) => {
 
         return res.status(500).json({
           error: true,
-          message: "Failed to create user",
+          message: err.message || "Failed to create user",
         });
       }
   
@@ -125,7 +125,7 @@ app.post("/register", (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: true,
-      message: "Internal server error",
+      message: error.message || "Internal server error",
     })
   }
 });
@@ -151,7 +151,7 @@ app.post('/login', (req, res) => {
       if (err) {
         return res.status(400).json({
           error: true,
-          message: "Failed to login user",
+          message: err.message || "Failed to login user",
         });
       }
 
@@ -184,7 +184,7 @@ app.post('/login', (req, res) => {
         if (err) {
           return res.status(400).json({
             error: true,
-            message: "Failed to save token",
+            message: err.message || "Failed to save token",
           });
         }
 
@@ -202,7 +202,7 @@ app.post('/login', (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: true,
-      message: "Internal server error",
+      message: error.message || "Internal server error",
     });
   }
 });
@@ -228,7 +228,7 @@ app.post("/stories", authenticateToken, (req, res) => {
       if (err) {
         return res.status(400).json({
           error: true,
-          message: "Failed to add story",
+          message: err.message || "Failed to add story",
         });
       }
 
@@ -240,7 +240,7 @@ app.post("/stories", authenticateToken, (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: true,
-      message: "Internal server error",
+      message: error.message || "Internal server error",
     });
   }
 });
@@ -266,7 +266,7 @@ app.get("/stories", authenticateToken, (req, res) => {
       if (err) {
         return res.status(400).json({
           error: true,
-          message: "Failed to get all story",
+          message: err.message || "Failed to get all story",
         });
       }
 
@@ -291,7 +291,7 @@ app.get("/stories", authenticateToken, (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: true,
-      message: "Internal server error",
+      message: error.message || "Internal server error",
     });
   }
 });
@@ -319,7 +319,7 @@ app.get("/stories/:id", authenticateToken, (req, res) => {
       if (err) {
         return res.status(400).json({
           error: true,
-          message: "Failed to get story"
+          message: err.message || "Failed to get story"
         });
       }
 
@@ -344,7 +344,7 @@ app.get("/stories/:id", authenticateToken, (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: true,
-      message: "Internal server error"
+      message: error.message || "Internal server error"
     });
   }
 });
