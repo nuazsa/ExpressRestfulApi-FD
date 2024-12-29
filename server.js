@@ -19,7 +19,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "test_db_api",
+  database: "story_sharing_api",
 });
 
 db.connect((err) => {
@@ -173,12 +173,12 @@ app.post('/login', (req, res) => {
       }
 
       const token = jwt.sign({ 
-        id: user.id, 
+        id: user.user_id, 
         name: user.name, 
         email: user.email 
       }, process.env.JWT_SECRET || 'shhhhh', { expiresIn: '1h' });
 
-      const sqlSaveToken = "UPDATE users SET token = ? WHERE id = ?";
+      const sqlSaveToken = "UPDATE users SET token = ? WHERE user_id = ?";
 
       db.query(sqlSaveToken, [token, user.id], (err) => {
         if (err) {
@@ -203,6 +203,148 @@ app.post('/login', (req, res) => {
     res.status(500).json({
       error: true,
       message: "Internal server error",
+    });
+  }
+});
+
+/**
+ * 
+ * API ADD NEW STORY
+ */
+app.post("/stories", authenticateToken, (req, res) => {
+  try {
+    const { description } = req.body;
+    const userId = req.user.id;
+
+    if (!description) {
+      res.status(400).json({
+        error: true,
+        message: "Missing required fields: description"
+      })
+    }
+
+    const sql = "INSERT INTO stories (user_id, description) values (?,?)"
+    db.query(sql, [userId, description], (err) => {
+      if (err) {
+        return res.status(400).json({
+          error: true,
+          message: "Failed to add story",
+        });
+      }
+
+      res.status(201).json({
+        error: false,
+        message: "Success" 
+      });
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
+  }
+});
+
+/**
+ * 
+ * GET ALL STORY
+ */
+app.get("/stories", authenticateToken, (req, res) => {
+  try {
+    const sql = `
+      SELECT 
+        stories.story_id, 
+        users.name, 
+        stories.description, 
+        stories.created_at 
+      FROM stories 
+      JOIN users ON stories.user_id = users.user_id
+      ORDER BY story_id DESC
+    `;
+
+    db.query(sql, (err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: true,
+          message: "Failed to get all story",
+        });
+      }
+
+      if (result.length === 0) {
+        return res.status(404).json({
+          error: true,
+          message: "No stories found",
+        });
+      }
+
+      res.status(200).json({
+        error: false,
+        message: "Story fetched successfully",
+        listStory: result.map((row) => ({
+          storyId: row.story_id,
+          name: row.name,
+          description: row.description,
+          createdAt: row.created_at,
+        }))
+      });
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
+  }
+});
+
+/**
+ * 
+ * DETAIL STORY
+ */
+app.get("/stories/:id", authenticateToken, (req, res) => {
+  try {
+    const storyId = req.params.id;
+
+    const sql = `
+      SELECT 
+        stories.story_id, 
+        users.name AS user_name, 
+        stories.description, 
+        stories.created_at 
+      FROM stories 
+      JOIN users ON stories.user_id = users.user_id 
+      WHERE stories.story_id = ?
+    `;
+    
+    db.query(sql, [storyId], (err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: true,
+          message: "Failed to get story"
+        });
+      }
+
+      if (result.length === 0) {
+        return res.status(404).json({
+          error: true,
+          message: "Story not found",
+        });
+      }
+      
+      res.status(200).json({
+        error: false,
+        message: "Story fetched successfully",
+        story:  {
+          storyId: result[0].story_id,
+          name: result[0].user_name,
+          description: result[0].description,
+          createdAt: result[0].created_at
+        },
+      });
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: "Internal server error"
     });
   }
 });
