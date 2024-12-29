@@ -41,3 +41,64 @@
 	}
 }
 ```
+
+### Add New Story
+- URL
+    - `/stories`
+- Method
+    - `POST`
+- Headers
+    - `Authorization`: `Bearer <token>`
+- Request Body
+    - `description` as `string`, max length 255 char
+- Response
+```
+{
+	"error": false,
+	"message": "Success",
+}
+```
+
+### Get All Story
+- URL
+    - `/stories`
+- Method
+    - `GET`
+- Headers
+    - `Authorization`: `Bearer <token>`
+- Response
+```
+{
+	"error": false,
+	"message": "Story fetched successfully",
+	"listStory": [
+		{
+			"storyId": 13,
+			"name": "Thana Nami",
+			"description": "I think today is cold",
+			"createdAt": "2024-12-28T13:22:27.000Z"
+		}
+	]
+}
+```
+
+### Detail Story
+- URL
+    - `/stories/:id`
+- Method
+    - `GET`
+- Headers
+    - `Authorization`: `Bearer <token>`
+- Response
+```
+{
+	"error": false,
+	"message": "Story fetched successfully",
+	"story": {
+		"storyId": 13,
+		"name": "Thana Nami",
+		"description": "I think today is cold",
+		"createdAt": "2024-12-28T13:22:27.000Z"
+	}
+}
+```
