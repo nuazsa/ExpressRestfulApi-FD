@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const app = express();
 const mysql = require("mysql2");
 const bcrypt = require("bcryptjs");
@@ -7,6 +8,13 @@ var jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 app.use(express.json());
+
+app.use(cors());
+
+app.use((req, res, next) => {
+  console.log('Request Headers:', req.headers);
+  next();
+});
 
 /**
  * ============================================
@@ -98,6 +106,7 @@ app.post("/register", (req, res) => {
     const sql = "INSERT INTO users (name, email, password) VALUES (?,?,?)";
   
     db.query(sql, [name, email, passwordHash], (err) => {
+      console.log(err);
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
           return res.status(400).json({
