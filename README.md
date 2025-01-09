@@ -3,7 +3,7 @@
 > API designed for posting and sharing short stories, similar to tweet-style posts.
 
 ## Endpoint
-`http://127.0.0.1:3000`
+`https://sharing-stories.vercel.app`
 ### Register
 - URL
     - `/register`
@@ -102,3 +102,12 @@
 	}
 }
 ```
+
+## Infrastructure
+
+- **API Performance Testing:** [K6](https://github.com/nuazsa/UsingK6)  
+- **Database:** MySQL    
+- **Deployment:** Vercel, Clever Cloud  
+- **Language:** JavaScript  
+- **Libraries:** Express, CORS, JWT, Bcrypt  
+- **Server-side:** NodeJS
