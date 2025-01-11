@@ -1,3 +1,14 @@
+/**
+ * ================ DEPRECATED ================
+ * 
+ * This file is deprecated,
+ * Please use src/index.js instead
+ * 
+ * The code below was used prior to refactoring
+ * 
+ * ============================================
+ */
+
 const express = require("express");
 const cors = require('cors');
 const app = express();
