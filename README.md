@@ -3,7 +3,7 @@
 > API designed for posting and sharing short stories, similar to tweet-style posts.
 
 ## Endpoint
-`https://sharing-stories.vercel.app`
+`https://sharing-stories.vercel.app/api`
 ### Register
 - URL
     - `/register`
