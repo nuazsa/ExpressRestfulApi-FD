@@ -5,9 +5,9 @@ import authenticateToken from '../middleware/auth-middleware.js';
 const apiRouter = new express.Router();
 apiRouter.use(authenticateToken);
 
-apiRouter.post('/api/stories', storiesController.create);
-apiRouter.get('/api/stories', storiesController.getAll);
-apiRouter.get('/api/stories/:id', storiesController.getById);
+apiRouter.post('/stories', storiesController.create);
+apiRouter.get('/stories', storiesController.getAll);
+apiRouter.get('/stories/:id', storiesController.getById);
 
 export {
   apiRouter
