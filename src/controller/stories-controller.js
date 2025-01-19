@@ -25,7 +25,7 @@ const getAll = async (req, res, next) => {
     res.status(200).json({
       error: false,
       message: "Story fetched successfully",
-      listStory: stories.map((row) => ({
+      data: stories.map((row) => ({
         storyId: row.story_id,
         name: row.name,
         description: row.description,
@@ -45,7 +45,7 @@ const getById = async (req, res, next) =>{
     res.status(200).json({
       error: false,
       message: "Story fetched successfully",
-      story: {
+      data: {
         storyId: story.story_id,
         name: story.name,
         description: story.description,

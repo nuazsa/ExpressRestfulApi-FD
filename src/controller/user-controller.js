@@ -26,7 +26,7 @@ const login = async (req, res, next) => {
     res.status(200).json({
       error: false,
       message: "Success",
-      loginResult: {
+      data: {
         userId: user.user_id,
         name: user.name,
         token: token

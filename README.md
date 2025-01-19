@@ -34,7 +34,7 @@
 {
 	"error": false,
 	"message": "Success",
-	"loginResult": {
+	"data": {
 		"userId": 127,
 		"name": "Thana Nami",
 		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTI3LCJuYW1lIjoiVGhhbmEgTmFtaSIsImVtYWlsIjoidGhhbmFuYW1pQGdtYWlsLmNvbSIsImlhdCI6MTczNTMwNDc1MywiZXhwIjoxNzM1MzA4MzUzfQ.iCALRmtTAyAJcWOGLqwmW04yK5wph1H2_xVGF0UjMH0"
@@ -71,7 +71,7 @@
 {
 	"error": false,
 	"message": "Story fetched successfully",
-	"listStory": [
+	"data": [
 		{
 			"storyId": 13,
 			"name": "Thana Nami",
@@ -94,7 +94,7 @@
 {
 	"error": false,
 	"message": "Story fetched successfully",
-	"story": {
+	"data": {
 		"storyId": 13,
 		"name": "Thana Nami",
 		"description": "I think today is cold",
