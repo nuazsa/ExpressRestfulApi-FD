@@ -3,7 +3,7 @@ import ResponseError from "../utils/response-error.js";
 
 const create = async (req, res, next) => {
   try {
-    if (!req.user || !req.user.id) throw new ResponseError(401, "Unauthorized: User information is missing");
+    if (!req.user || !req.user.id) throw new ResponseError(401, "\"Unauthorized\" user information is missing");
     const userId = req.user.id;
 
     await storiesService.create(userId, req.body);
@@ -20,7 +20,7 @@ const create = async (req, res, next) => {
 const getAll = async (req, res, next) => {
   try {
     const stories = await storiesService.getAll();
-    if (!stories) throw new ResponseError(404, "Stories not found");
+    if (!stories) throw new ResponseError(404, "\"data\" not found");
 
     res.status(200).json({
       error: false,
@@ -40,7 +40,7 @@ const getAll = async (req, res, next) => {
 const getById = async (req, res, next) =>{
   try {
     const story = await storiesService.getById(req.params.id);
-    if (!story) throw new ResponseError(404, "Story not found");
+    if (!story) throw new ResponseError(404, "\"data\" not found");
 
     res.status(200).json({
       error: false,
