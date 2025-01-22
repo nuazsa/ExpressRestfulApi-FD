@@ -14,7 +14,7 @@ const create = async (userId, request) => {
 
     return result;
   } catch (e) {
-    throw new ResponseError(500, e.message || "Database error");
+    throw(e);
   }
 };
 
@@ -34,7 +34,7 @@ const getAll = async () => {
     const [stories] = await dbPool.execute(query);
     return stories;
   } catch (e) {
-    throw new ResponseError(500, e.message || "Database error");
+    throw(e);
   }
 };
 
@@ -56,7 +56,7 @@ const getById = async (id) => {
     const [story] = await dbPool.execute(query, [storyId]);
     return story[0];
   } catch (e) {
-    throw new ResponseError(500, e.message || "Database error");
+    throw(e);
   }
 }
 
