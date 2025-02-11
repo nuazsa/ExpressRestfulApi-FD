@@ -1,4 +1,5 @@
 import dbPool from "../config/database.js";
+import client from "../config/redis.js";
 import ResponseError from "../utils/response-error.js";
 import {validate} from "../validation/validation.js";
 import {createStoryValidation, getStoryByIdValidation} from "../validation/stories-validation.js";
@@ -12,6 +13,8 @@ const create = async (userId, request) => {
 
     if (result.affectedRows === 0) throw new ResponseError(500, "Failed to create story");
 
+    await client.del("stories");
+    
     return result;
   } catch (e) {
     throw(e);
@@ -20,6 +23,12 @@ const create = async (userId, request) => {
 
 const getAll = async () => {
   try {
+    const cachedStories = await client.get("stories");
+
+    if (cachedStories) {
+      return JSON.parse(cachedStories);
+    }
+    
     const query = `
       SELECT 
         stories.story_id, 
@@ -32,6 +41,9 @@ const getAll = async () => {
     `;
 
     const [stories] = await dbPool.execute(query);
+
+    await client.setEx("stories", 60, JSON.stringify(stories));
+    
     return stories;
   } catch (e) {
     throw(e);
