@@ -106,8 +106,8 @@
 ## Infrastructure
 
 - **API Performance Testing:** [K6](https://github.com/nuazsa/UsingK6)  
-- **Database:** MySQL    
-- **Deployment:** Vercel, Clever Cloud  
+- **Database:** MySQL, Redis    
+- **Deployment:** Clever Cloud, Redis Cloud, Vercel
 - **Language:** JavaScript  
-- **Libraries:** Express, CORS, JWT, Bcrypt, Joi 
+- **Libraries:** BcryptJs, CORS, Dotenv, Express, Joi, JWT, MySQL2, Redis, UUID, Winston
 - **Server-side:** NodeJS
