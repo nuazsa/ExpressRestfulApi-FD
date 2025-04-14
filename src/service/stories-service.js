@@ -1,21 +1,24 @@
-import dbPool from "../config/database.js";
 import client from "../config/redis.js";
 import ResponseError from "../utils/response-error.js";
 import {validate} from "../validation/validation.js";
 import {createStoryValidation, getStoryByIdValidation} from "../validation/stories-validation.js";
+import Story from "../models/Story.js";
+import User from "../models/User.js";
 
 const create = async (userId, request) => {
   try {
     const {description} = validate(createStoryValidation, request);
 
-    const query = "INSERT INTO stories (user_id, description) VALUES (?, ?)";
-    const [result] = await dbPool.execute(query, [userId, description]);
+    const story = await Story.create({
+      user_id: userId,
+      description
+    });
 
-    if (result.affectedRows === 0) throw new ResponseError(500, "Failed to create story");
+    if (story.affectedRows === 0) throw new ResponseError(500, "Failed to create story");
 
     await client.del("stories");
     
-    return result;
+    return story;
   } catch (e) {
     throw(e);
   }
@@ -28,20 +31,19 @@ const getAll = async () => {
     if (cachedStories) {
       return JSON.parse(cachedStories);
     }
-    
-    const query = `
-      SELECT 
-        stories.story_id, 
-        users.name, 
-        stories.description, 
-        stories.created_at 
-      FROM stories 
-      JOIN users ON stories.user_id = users.user_id
-      ORDER BY story_id DESC
-    `;
 
-    const [stories] = await dbPool.execute(query);
+    const stories = await Story.findAll({
+      include: {
+        model: User,
+        attributes: ['name'],
+      },
+      attributes: ['story_id', 'description', 'createdAt'],
+      order: [['story_id', 'DESC']],
+      raw: true,
+      nest: true
+    });
 
+    console.log(stories);
     await client.setEx("stories", 60, JSON.stringify(stories));
     
     return stories;
@@ -52,21 +54,20 @@ const getAll = async () => {
 
 const getById = async (id) => {
   try {
-    const storyId = validate(getStoryByIdValidation, id)
+    const storyId = validate(getStoryByIdValidation, id);
 
-    const query = `
-      SELECT 
-        stories.story_id, 
-        users.name AS name, 
-        stories.description, 
-        stories.created_at 
-      FROM stories 
-      JOIN users ON stories.user_id = users.user_id 
-      WHERE stories.story_id = ?
-    `;
+    const stories = await Story.findAll({
+      include: {
+        model: User,
+        attributes: ['name']
+      },
+      attributes: ['story_id', 'description', 'createdAt'],
+      where: storyId,
+      raw: true,
+      nest: true
+    })
 
-    const [story] = await dbPool.execute(query, [storyId]);
-    return story[0];
+    return stories[0];
   } catch (e) {
     throw(e);
   }

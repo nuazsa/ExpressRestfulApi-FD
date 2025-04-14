@@ -27,9 +27,9 @@ const getAll = async (req, res, next) => {
       message: "Story fetched successfully",
       data: stories.map((row) => ({
         storyId: row.story_id,
-        name: row.name,
+        name: row.User.name,
         description: row.description,
-        createdAt: row.created_at,
+        createdAt: row.createdAt,
       }))
     });
   } catch (e) {
@@ -47,9 +47,9 @@ const getById = async (req, res, next) =>{
       message: "Story fetched successfully",
       data: {
         storyId: story.story_id,
-        name: story.name,
+        name: story.User.name,
         description: story.description,
-        createdAt: story.created_at,
+        createdAt: story.createdAt,
       }
     });
   } catch (e) {
