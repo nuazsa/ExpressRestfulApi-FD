@@ -30,6 +30,8 @@ const logError = (req, err) => {
     body: req.body,
     headers: req.headers,
   });
+
+  return requestId;
 };
 
 export {

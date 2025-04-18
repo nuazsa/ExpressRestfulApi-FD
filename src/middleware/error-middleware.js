@@ -15,7 +15,7 @@ const errorMiddleware = (err, req, res, next) => {
       message: err.message,
     });
   } else {
-    logError(req, err)
+    const requestId = logError(req, err);
 
     res.status(500).json({
       error: true,
