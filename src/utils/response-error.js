@@ -1,8 +1,7 @@
 class ResponseError extends Error {
   constructor(status, message) {
-    super();
+    super(message);
     this.status = status;
-    this.message = Array.isArray(message) ? message : [message];
   }
 }
 

@@ -9,7 +9,7 @@ const register = async (request) => {
     const {name, email, password} = validate(registerUserValidation, request);
 
     const existing = await User.findOne({where: {email}});
-    if (existing) throw new ResponseError(409, "\"Invalid\" email already in use");
+    if (existing) throw new ResponseError(409, "Invalid email already in use");
 
     const passwordHash = await bcryptjs.hash(password, 10);
 
@@ -21,7 +21,7 @@ const register = async (request) => {
     
     return user;
   } catch (e) {
-    if (e.code === "ER_DUP_ENTRY") throw new ResponseError(409, "\"Invalid\" email already in use");
+    if (e.code === "ER_DUP_ENTRY") throw new ResponseError(409, "Invalid email already in use");
     throw (e);
   }
 }
@@ -35,10 +35,10 @@ const login = async (request) => {
       attributes: ['user_id', 'name', 'password']
     });
   
-    if (!user) throw new ResponseError(401, "\"Invalid\" email or password");
+    if (!user) throw new ResponseError(401, "Invalid email or password");
 
     const passwordMatch = await bcryptjs.compare(password, user.password);
-    if (!passwordMatch) throw new ResponseError(401, "\"Invalid\" email or password");
+    if (!passwordMatch) throw new ResponseError(401, "Invalid email or password");
   
     return user;
   } catch (e) {
